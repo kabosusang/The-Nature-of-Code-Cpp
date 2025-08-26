@@ -16,19 +16,24 @@ Walker::Walker(){
 void Walker::display(){
     auto& painter = Painter::getInstance();
     painter.PutPixel(x_, y_, {255,255,255,255});
-    std::cout << "Drawing at: (" << x_ << ", " << y_ << ")" << std::endl;
 }
 
 void Walker::step(){
-    Random rd{0,3};
-    auto randowm = rd.get();
+    Random rdx{-1,1};
+    Random rdy{-1,1};
+   
+    auto stepx = rdx.get();
+    auto stepy = rdy.get();
 
-    switch (randowm) {
-        case 0:x_++;break;
-        case 1:x_--;break;
-        case 2:y_++;break;
-        default: y_--;break;
-    }
+    x_ += stepx;
+    y_ += stepy;
+
+    // switch (randowm) {
+    //     case 0:x_++;break;
+    //     case 1:x_--;break;
+    //     case 2:y_++;break;
+    //     default: y_--;break;
+    // }
 
 }
 
