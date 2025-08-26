@@ -1,7 +1,8 @@
 #pragma once
-#include <base/Canvas.hpp>
 #include "SDL3/SDL_render.h"
 #include <Tools/Color.hpp>
+#include <base/Canvas.hpp>
+
 
 class Painter {
 public:
@@ -23,12 +24,13 @@ public:
 	void Present() { SDL_RenderPresent(GetRenderer()); }
 
 	//RunPixelPen
-	void PutPixel(float x, float y,Color color);
+	void PutPixel(float x, float y, Color color);
+	void DrawRect(float x, float y, float width, float height, Color color);
+	void DrawRectOutline(float x, float y, float width, float height, Color color);
 
 private:
 	Painter();
 	~Painter();
-
 
 private:
 	std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;

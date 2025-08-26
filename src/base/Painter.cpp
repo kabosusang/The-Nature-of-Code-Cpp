@@ -18,3 +18,29 @@ void Painter::PutPixel(float x, float y,Color color) {
 	SetColor(color);
 	SDL_RenderPoint(GetRenderer(), x, y);
 }
+
+void Painter::DrawRect(float x, float y, float width, float height, Color color) {
+    SetColor(color);
+    
+    SDL_FRect rect = {
+        x,          // x 位置
+        y,          // y 位置
+        width,      // 宽度
+        height      // 高度
+    };
+    
+    SDL_RenderFillRect(GetRenderer(), &rect);
+}
+
+void Painter::DrawRectOutline(float x, float y, float width, float height, Color color) {
+    SetColor(color);
+    
+    SDL_FRect rect = {
+        x,          // x 位置
+        y,          // y 位置
+        width,      // 宽度
+        height      // 高度
+    };
+    
+    SDL_RenderRect(GetRenderer(), &rect);
+}

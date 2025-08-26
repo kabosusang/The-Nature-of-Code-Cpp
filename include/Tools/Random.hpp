@@ -3,15 +3,16 @@
 #include <random>
 class Random {
 public:
-	Random(int min, int max) :
+	Random(double min, double max) :
 			gen(rd()), dis(min, max) {}
 
-    int get() {
+    double get() {
         return dis(gen);
     }
+
 
 private:
 	std::random_device rd;
 	std::mt19937 gen;
-	std::uniform_int_distribution<> dis;
+	std::uniform_real_distribution<> dis;
 };

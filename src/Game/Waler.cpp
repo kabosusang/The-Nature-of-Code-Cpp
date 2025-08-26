@@ -19,22 +19,19 @@ void Walker::display(){
 }
 
 void Walker::step(){
-    Random rdx{-1,1};
-    Random rdy{-1,1};
-   
-    auto stepx = rdx.get();
-    auto stepy = rdy.get();
+    Random rdx{0,1};
 
-    x_ += stepx;
-    y_ += stepy;
+    auto r = rdx.get();
 
-    // switch (randowm) {
-    //     case 0:x_++;break;
-    //     case 1:x_--;break;
-    //     case 2:y_++;break;
-    //     default: y_--;break;
-    // }
-
+    if (r < 0.4){
+        x_++;
+    }else if (r < 0.6) {
+        x_--;
+    }else if (r < 0.8) {
+        y_++;
+    }else{
+        y_--;
+    }
 }
 
 
