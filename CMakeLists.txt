@@ -4,13 +4,6 @@ project(CGScratch
   LANGUAGES CXX
 )
 
-# 并行编译
-include(ProcessorCount)
-ProcessorCount(N)
-if(NOT N EQUAL 0)
-    set(CMAKE_JOB_POOL_COMPILE compile_job_pool)
-    set(CMAKE_JOB_POOLS compile_job_pool=${N})
-endif()
 
 #----------------------------------------------------------------
 # 现代 CMake 核心配置
@@ -18,11 +11,6 @@ endif()
 set(CMAKE_CXX_STANDARD 20)                # 强制使用 C++20 标准
 set(CMAKE_CXX_STANDARD_REQUIRED ON)       # 必须支持该标准
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)     # 生成 compile_commands.json
-
-# 默认构建类型为 Debug（如果未指定）
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif()
 
 #----------------------------------------------------------------
 # 项目目录结构
@@ -50,20 +38,11 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 )
 
 
-# 过滤掉不需要的文件（如测试文件）
-foreach(file IN LISTS SRC_FILES)
-    if(NOT file MATCHES ".*/test/.*")  # 排除test目录
-        list(APPEND SOURCES ${file})
-    endif()
-endforeach()
-
-
 #----------------------------------------------------------------
 # 第三方库
 #----------------------------------------------------------------
 set(SDL_TEST_LIBRARY OFF)
 add_subdirectory(3rdparty/SDL3)
-
 
 #----------------------------------------------------------------
 # 可执行目标

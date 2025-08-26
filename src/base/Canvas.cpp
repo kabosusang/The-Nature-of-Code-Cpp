@@ -4,7 +4,7 @@
 
 SDL_Window* Canvas::CreateSDLWindow() {
 	auto* win =
-			SDL_CreateWindow("Nature Of Code", 600, 600, SDL_WINDOW_OPENGL);
+			SDL_CreateWindow("Nature Of Code", 600, 600, SDL_WINDOW_RESIZABLE);
 	if (!win) {
 		SDL_Log("Unable to create window: %s", SDL_GetError());
 		SDL_Quit();
