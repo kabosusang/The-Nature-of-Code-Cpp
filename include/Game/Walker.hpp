@@ -7,4 +7,8 @@ struct Walker{
 
     void display();
     void step();
+    void stepconust();
+
+
+
 };

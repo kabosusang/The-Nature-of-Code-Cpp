@@ -4,6 +4,8 @@
 #include <base/Canvas.hpp>
 
 
+
+
 class Painter {
 public:
 	static Painter& getInstance() {
@@ -27,6 +29,8 @@ public:
 	void PutPixel(float x, float y, Color color);
 	void DrawRect(float x, float y, float width, float height, Color color);
 	void DrawRectOutline(float x, float y, float width, float height, Color color);
+	void DrawCircle(int centerX, int centerY, int radius);
+
 
 private:
 	Painter();
