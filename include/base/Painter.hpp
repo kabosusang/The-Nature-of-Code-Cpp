@@ -5,7 +5,6 @@
 
 
 
-
 class Painter {
 public:
 	static Painter& getInstance() {

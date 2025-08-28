@@ -4,6 +4,7 @@
 #include <base/Painter.hpp>
 
 #include "Game/Draw.hpp"
+#include "Game/editor/editor.hpp"
 
 
 int main(int argc, char* argv[]) {
@@ -16,13 +17,30 @@ int main(int argc, char* argv[]) {
 	EventTrain train;
 	Game game(train);
 
-	//Draw
-	Draw draw{};
+	//Editor
+	Editor editor{};
 
-	train.subscribeFrame([&draw](float deltaTime) {
+	//Draw
+	Draw draw;
+
+	//Logic
+	train.subscribeFrame([&draw,&editor](float deltaTime) {
 		draw.draw();
 		draw.present();
+
+		editor.draw();
 	});
+
+	//Editor
+	train.subscribeEvent([&](SDL_Event& e){
+		editor.pollevent(e);
+	});
+
+
+
+	// train.publishEvent(SDL_Event &event){
+
+	// }
 
 
 	//渲染循环

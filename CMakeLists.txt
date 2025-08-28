@@ -43,6 +43,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 #----------------------------------------------------------------
 set(SDL_TEST_LIBRARY OFF)
 add_subdirectory(3rdparty/SDL3)
+add_subdirectory(3rdparty/imgui)
+
 
 #----------------------------------------------------------------
 # 可执行目标
@@ -72,7 +74,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # find_package(OpenCV REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE OpenCV::OpenCV)
 target_link_libraries(${PROJECT_NAME}
- PRIVATE SDL3::SDL3)
+ PRIVATE SDL3::SDL3 imgui)
 
 #----------------------------------------------------------------
 # 多余Cmake文件
