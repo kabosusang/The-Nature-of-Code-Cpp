@@ -3,7 +3,8 @@
 #include <Tools/Color.hpp>
 #include <base/Canvas.hpp>
 
-
+inline static constexpr Color Black = {0,0,0,255};
+inline static constexpr Color White = {255,255,255,255};
 
 class Painter {
 public:

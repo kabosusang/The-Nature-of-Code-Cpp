@@ -10,6 +10,7 @@ struct Editor {
     void pollevent(SDL_Event& event);
 
 private:
+	void DemoWindowWidgetsListBoxes();
 	SDL_Window* window_;
 	SDL_Renderer* renderer_;
 };

@@ -42,6 +42,15 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 # 第三方库
 #----------------------------------------------------------------
 set(SDL_TEST_LIBRARY OFF)
+set(SDL_CAMERA OFF)
+set(SDL_EXAMPLES OFF)
+set(SDL_GPU OFF)
+set(SDL_RENDER ON)
+set(SDL_HAPTIC OFF)
+set(SDL_AUDIO OFF)
+set(SDL_TESTS OFF)
+set(SDL_TEST_LIBRARY OFF)
+set(SDL_INSTALL OFF)
 add_subdirectory(3rdparty/SDL3)
 add_subdirectory(3rdparty/imgui)
 

@@ -24,15 +24,18 @@ int main(int argc, char* argv[]) {
 	Draw draw;
 
 	//Logic
-	train.subscribeFrame([&draw,&editor](float deltaTime) {
+	train.subscribeFrame([&draw,&editor,&painter](float deltaTime) {
+		painter.Clear(Black);
 		draw.draw();
-		draw.present();
-
 		editor.draw();
+
+		draw.present();
 	});
 
 	//Editor
 	train.subscribeEvent([&](SDL_Event& e){
+		canvas.pollevent(e);
+		
 		editor.pollevent(e);
 	});
 

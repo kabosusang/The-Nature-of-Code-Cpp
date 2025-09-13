@@ -17,14 +17,14 @@ public:
 	//Window WH
     int GetWindowW(){return WindowW;}
     int GetWindowH(){return WindowH;}
-
+	void pollevent(SDL_Event& event);
 private:
 	Canvas();
 	~Canvas();
-	static SDL_Window* CreateSDLWindow();
+	SDL_Window* CreateSDLWindow();
 
 private:
-	int WindowW = 600;
-	int WindowH = 600;
+	int WindowW = 1200;
+	int WindowH = 800;
 	std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
 };

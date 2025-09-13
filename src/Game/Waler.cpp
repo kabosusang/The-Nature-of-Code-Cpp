@@ -15,7 +15,7 @@ Walker::Walker(){
 
 void Walker::display(){
     auto& painter = Painter::getInstance();
-    painter.PutPixel(x_, y_, {255,255,255,255});
+    painter.PutPixel(x_, y_, White);
 }
 
 void Walker::step(){
