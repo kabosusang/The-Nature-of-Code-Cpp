@@ -1,26 +1,22 @@
 #include "Game/editor/editor.hpp"
 
+#include "Game/Draw.hpp"
 #include "base/Canvas.hpp"
 #include "base/Painter.hpp"
-#include "Game/Draw.hpp"
-
 
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 #include "imgui.h"
 #include <iostream>
 
-
-static void HelpMarker(const char* desc)
-{
-    ImGui::TextDisabled("(?)");
-    if (ImGui::BeginItemTooltip())
-    {
-        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-        ImGui::TextUnformatted(desc);
-        ImGui::PopTextWrapPos();
-        ImGui::EndTooltip();
-    }
+static void HelpMarker(const char* desc) {
+	ImGui::TextDisabled("(?)");
+	if (ImGui::BeginItemTooltip()) {
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
 }
 
 Editor::Editor() {
@@ -32,8 +28,8 @@ void Editor::init() {
 
 	auto& canvas = Canvas::getInstance();
 	auto& painter = Painter::getInstance();
-    window_ = canvas.GetWindow();
-    renderer_ = painter.GetRenderer();
+	window_ = canvas.GetWindow();
+	renderer_ = painter.GetRenderer();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -80,31 +76,32 @@ void Editor::draw() {
 	//SDL_RenderPresent(renderer_);
 }
 
-void Editor::DemoWindowWidgetsListBoxes()
-{
-    if (ImGui::TreeNode("Nature Code"))
-    {
-        //static int item_selected_idx = 0; // Here we store our selected data as an index.
-        // Custom size: use all width, 5 items tall
-		auto item_selected_idx = Draw::index_;
-        ImGui::Text("Select:");
-        if (ImGui::BeginListBox("##listbox 2", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-        {
-            for (int n = 0; n < Draw::nodes.size(); n++)
-            {
-                bool is_selected = (item_selected_idx == n);
-                ImGuiSelectableFlags flags =  0;
-                if (ImGui::Selectable(Draw::nodes[n].data(), is_selected, flags)){
-					Draw::index_ = n;
-				}
-                    
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                if (is_selected)
-                    ImGui::SetItemDefaultFocus();
-            }
-            ImGui::EndListBox();
-        }
+void Editor::DemoWindowWidgetsListBoxes() {
+	static bool showWindow = true; // 控制窗口显示
+	if (showWindow && ImGui::Begin("Select Demo", &showWindow)) {
+		if (ImGui::TreeNode("Nature Code")) {
+			//static int item_selected_idx = 0; // Here we store our selected data as an index.
+			// Custom size: use all width, 5 items tall
+			auto item_selected_idx = Draw::index_;
+			ImGui::Text("Select:");
+			if (ImGui::BeginListBox("##listbox 2", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+				for (int n = 0; n < Draw::nodes.size(); n++) {
+					bool is_selected = (item_selected_idx == n);
+					ImGuiSelectableFlags flags = 0;
+					if (ImGui::Selectable(Draw::nodes[n].data(), is_selected, flags)) {
+						Draw::index_ = n;
+					}
 
-        ImGui::TreePop();
-    }
+					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+					if (is_selected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndListBox();
+			}
+
+			ImGui::TreePop();
+		}
+		ImGui::End();
+	}
 }

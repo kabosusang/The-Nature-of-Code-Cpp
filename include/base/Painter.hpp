@@ -1,4 +1,5 @@
 #pragma once
+#include "Game/Utils/Vector.hpp"
 #include "SDL3/SDL_render.h"
 #include <Tools/Color.hpp>
 #include <base/Canvas.hpp>
@@ -27,14 +28,16 @@ public:
 
 	//RunPixelPen
 	void PutPixel(float x, float y, Color color);
+	void DrawLine(Vector v1,Vector v2,Color color);
 	void DrawRect(float x, float y, float width, float height, Color color);
 	void DrawRectOutline(float x, float y, float width, float height, Color color);
 	void DrawCircle(int centerX, int centerY, int radius);
-
+	void DrawFilledCircle(int centerX, int centerY, int radius, Color color);
 
 private:
 	Painter();
 	~Painter();
+	void DrawHorizontalLine(int startX, int endX, int y, Color color);
 
 private:
 	std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;

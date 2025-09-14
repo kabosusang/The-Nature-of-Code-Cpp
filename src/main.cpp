@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	//Editor
 	train.subscribeEvent([&](SDL_Event& e){
 		canvas.pollevent(e);
-		
+		draw.pollevent(e);
 		editor.pollevent(e);
 	});
 
