@@ -15,6 +15,7 @@ std::vector<std::string_view> Draw::nodes{
 };
 
 uint32_t Draw::index_ = 0;
+
 void Draw::pollevent(SDL_Event& event) {
 	if (event.type == SDL_EVENT_MOUSE_MOTION){
 		mouse_.x = event.motion.x;
@@ -37,9 +38,17 @@ void WalkerStep(Draw* draw);
 void RandomCircle();
 void PingPongBall(Draw* draw);
 void MouseBall(Draw* draw);
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 void Draw::selectNode() {
+	static auto first = index_;
+	if (first != index_){
+		mover_ = {};
+		walker_ = {};
+		first = index_;
+	}
+	
 	switch (index_) {
 		case 0: {
 			WalkerStep(this);
@@ -56,6 +65,11 @@ void Draw::selectNode() {
 		case 3: {
 			MouseBall(this);
 		} break;
+
+
+
+
+
 
 		default:
 			break;
