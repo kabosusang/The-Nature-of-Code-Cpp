@@ -18,7 +18,9 @@ void RandomCircle() {
 }
 
 void PingPongBall(Draw* draw) {
+	draw->mover_.velocity.limit(10);
 	draw->mover_.update();
+	draw->mover_.edgejudging(-1);
 	draw->mover_.display();
 }
 
@@ -27,6 +29,8 @@ void MouseBall(Draw* draw){
 	dir.normalize();
 	dir.mult(0.5);
 	draw->mover_.acceleration = dir;
+	draw->mover_.velocity.limit(10);
 	draw->mover_.update();
+	draw->mover_.edgejudging(-1);
 	draw->mover_.display();
 }

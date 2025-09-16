@@ -78,63 +78,58 @@ void Editor::draw() {
 const static short vectorNum = Draw::nodes_vector.size();
 const static short forceNum = Draw::nodes_force.size();
 
-
-
-
 void Editor::DemoWindowWidgetsListBoxes() {
 	static bool showWindow = true; // 控制窗口显示
-	if (showWindow && ImGui::Begin("Select Demo", &showWindow)) {
-		if (ImGui::TreeNode("Vector")) {
-			//static int item_selected_idx = 0; // Here we store our selected data as an index.
-			// Custom size: use all width, 5 items tall
-			auto item_selected_idx = Draw::index_;
-			ImGui::Text("Select:");
-			if (ImGui::BeginListBox("Vector", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
-				for (int n = 0; n < Draw::nodes_vector.size(); n++) {
-					bool is_selected = (item_selected_idx == n);
-					ImGuiSelectableFlags flags = 0;
-					if (ImGui::Selectable(Draw::nodes_vector[n].data(), is_selected, flags)) {
-						Draw::index_ = n;
-					}
+	if (showWindow) {
+		if (ImGui::Begin("Select Demo", &showWindow)) {
+			if (ImGui::TreeNode("Vector")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				auto item_selected_idx = Draw::index_;
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Vector", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_vector.size(); n++) {
+						bool is_selected = (item_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_vector[n].data(), is_selected, flags)) {
+							Draw::index_ = n;
+						}
 
-					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-					if (is_selected) {
-						ImGui::SetItemDefaultFocus();
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
 					}
+					ImGui::EndListBox();
 				}
-				ImGui::EndListBox();
+
+				ImGui::TreePop();
 			}
 
-			ImGui::TreePop();
-		}
+			if (ImGui::TreeNode("Force")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				auto item_selected_idx = Draw::index_;
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Force", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_force.size(); n++) {
+						bool is_selected = (item_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_force[n].data(), is_selected, flags)) {
+							Draw::index_ = n + vectorNum;
+						}
 
-		if (ImGui::TreeNode("Force")) {
-			//static int item_selected_idx = 0; // Here we store our selected data as an index.
-			// Custom size: use all width, 5 items tall
-			auto item_selected_idx = Draw::index_;
-			ImGui::Text("Select:");
-			if (ImGui::BeginListBox("Force", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
-				for (int n = 0; n < Draw::nodes_force.size(); n++) {
-					bool is_selected = (item_selected_idx == n);
-					ImGuiSelectableFlags flags = 0;
-					if (ImGui::Selectable(Draw::nodes_force[n].data(), is_selected, flags)) {
-						Draw::index_ = n + vectorNum;
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
 					}
-
-					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-					if (is_selected) {
-						ImGui::SetItemDefaultFocus();
-					}
+					ImGui::EndListBox();
 				}
-				ImGui::EndListBox();
+
+				ImGui::TreePop();
 			}
-
-			ImGui::TreePop();
 		}
-
-
-
-
 		ImGui::End();
 	}
 }

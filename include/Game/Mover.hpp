@@ -15,42 +15,48 @@ public:
 public:
 	Mover() {
 		auto& canvas = Canvas::getInstance();
-		location = {(float)canvas.GetWindowW() / 2,(float)canvas.GetWindowH() / 2};
-		velocity = {0,0};
-		acceleration = {-0.001,0.01};
-		mass = 10.0f;
+		location = { (float)canvas.GetWindowW() / 2, (float)canvas.GetWindowH() / 2 };
+		velocity = { 0, 0 };
+		acceleration = { -0.001, 0.01 };
+		mass = 1.0f;
+	}
+
+	Mover(float m, float x, float y) {
+		auto& canvas = Canvas::getInstance();
+		location = { x, y };
+		velocity = { 0, 0 };
+		acceleration = { -0.001, 0.01 };
+		mass = m;
 	}
 
 	void update() {
-		velocity +=acceleration;
-		velocity.limit(10);
+		velocity += acceleration;
 		location += velocity;
-		edgejudging();
 	}
 
-	void edgejudging() {
+	void edgejudging(float force = -1.0f) {
 		auto& canvas = Canvas::getInstance();
 		//边缘检测
 		if ((location.x > canvas.GetWindowW()) || (location.x < 0)) {
-			velocity.x *= -1;
+			velocity.x *= force;
 		}
 
 		if ((location.y > canvas.GetWindowH()) || (location.y < 0)) {
-			velocity.y *= -1;
+			velocity.y *= force;
 		}
 	}
 
-	void display() {
+	void display(bool isFilled = true) {
 		auto& painter = Painter::getInstance();
-		painter.DrawFilledCircle(location.x, location.y, 16, White);
+		if (isFilled) {
+			painter.DrawFilledCircle(location.x, location.y, 16 * mass, White);
+		} else {
+			painter.DrawCircle(location.x, location.y, 16 * mass);
+		}
 	}
 
-	void applyForce(Vector force){
+	void applyForce(Vector force) {
 		force.div(mass);
 		acceleration.add(force);
 	}
-
-
-
-
 };

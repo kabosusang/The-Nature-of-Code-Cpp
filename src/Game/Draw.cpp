@@ -20,6 +20,7 @@ const std::vector<std::string_view> Draw::nodes_vector{
 
 const std::vector<std::string_view> Draw::nodes_force{
 	"MouseDownWind",
+	"ExternalForce",
 
 };
 
@@ -49,6 +50,8 @@ void Draw::present() {
 	painter.Present();
 }
 
+//Remove Resource
+extern void ClearMovers();
 
 
 void Draw::selectNode() {
@@ -57,6 +60,16 @@ void Draw::selectNode() {
 		mover_ = {};
 		walker_ = {};
 		first = index_;
+		//Init
+		switch (first) {
+			case 5:{
+				MutiBallForce_Init(this);
+			}break;
+
+			default:{
+				ClearMovers();
+			}
+		}
 	}
 	
 	switch (index_) {
@@ -78,7 +91,9 @@ void Draw::selectNode() {
 		case 4:{
 			MouseDownWind(this);
 		}break;
-
+		case 5:{
+			MutiBallForce(this);
+		}break;
 
 
 
