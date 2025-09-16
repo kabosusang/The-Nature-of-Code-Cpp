@@ -9,8 +9,8 @@ class Mover {
 public:
 	Vector location{};
 	Vector velocity{};
-
 	Vector acceleration{};
+	float mass{};
 
 public:
 	Mover() {
@@ -18,6 +18,7 @@ public:
 		location = {(float)canvas.GetWindowW() / 2,(float)canvas.GetWindowH() / 2};
 		velocity = {0,0};
 		acceleration = {-0.001,0.01};
+		mass = 10.0f;
 	}
 
 	void update() {
@@ -43,4 +44,13 @@ public:
 		auto& painter = Painter::getInstance();
 		painter.DrawFilledCircle(location.x, location.y, 16, White);
 	}
+
+	void applyForce(Vector force){
+		force.div(mass);
+		acceleration.add(force);
+	}
+
+
+
+
 };

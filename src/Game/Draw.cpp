@@ -4,15 +4,25 @@
 #include "base/Canvas.hpp"
 #include "base/Painter.hpp"
 
-auto& painter = Painter::getInstance();
-auto& canvas = Canvas::getInstance();
 
-std::vector<std::string_view> Draw::nodes{
+//Vector
+#include "Game/Func/Vector.hpp"
+#include "Game/Func/Force.hpp"
+
+
+
+const std::vector<std::string_view> Draw::nodes_vector{
 	"WalkerStep",
 	"RandomCircle",
 	"PingPongBall",
 	"MouseBall"
 };
+
+const std::vector<std::string_view> Draw::nodes_force{
+	"MouseDownWind",
+
+};
+
 
 uint32_t Draw::index_ = 0;
 
@@ -22,6 +32,11 @@ void Draw::pollevent(SDL_Event& event) {
 		mouse_.y = event.motion.y;
 	}
 
+	if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
+		mousePressed_ = true;
+	}else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+		mousePressed_ = false;
+	}
 }
 
 
@@ -33,12 +48,7 @@ void Draw::present() {
 	auto& painter = Painter::getInstance();
 	painter.Present();
 }
-///////////////////////////////////---------------/////////////////////////////////////////////////////////
-void WalkerStep(Draw* draw);
-void RandomCircle();
-void PingPongBall(Draw* draw);
-void MouseBall(Draw* draw);
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 void Draw::selectNode() {
@@ -50,10 +60,10 @@ void Draw::selectNode() {
 	}
 	
 	switch (index_) {
+		//Vector
 		case 0: {
 			WalkerStep(this);
 		} break;
-
 		case 1: {
 			RandomCircle();
 		} break;
@@ -61,12 +71,13 @@ void Draw::selectNode() {
 		case 2: {
 			PingPongBall(this);
 		} break;
-
 		case 3: {
 			MouseBall(this);
 		} break;
-
-
+		//Force
+		case 4:{
+			MouseDownWind(this);
+		}break;
 
 
 
@@ -76,29 +87,9 @@ void Draw::selectNode() {
 	}
 }
 
-void WalkerStep(Draw* draw) {
-	draw->walker_.step();
-	draw->walker_.display();
-}
 
-void RandomCircle() {
-	for (int i{}; i < 10; ++i) {
-		NormalRandom x{ 0.0f, (double)canvas.GetWindowW() };
-		painter.DrawCircle(x.get(), 220, 16);
-	}
-}
 
-void PingPongBall(Draw* draw) {
-	draw->mover_.update();
-	draw->mover_.display();
-}
 
-void MouseBall(Draw* draw){
-	Vector dir = Vector::sub(draw->mouse_, draw->mover_.location);
-	dir.normalize();
-	dir.mult(0.5);
-	draw->mover_.acceleration = dir;
-	draw->mover_.update();
-	draw->mover_.display();
-	
-}
+
+
+

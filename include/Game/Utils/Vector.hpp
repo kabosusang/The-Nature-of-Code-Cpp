@@ -1,53 +1,57 @@
 #pragma once
 
 #include <cmath>
-struct Vector{
-    float x;
-    float y;
+struct Vector {
+	float x;
+	float y;
 
-    void operator +=(Vector& other){
-        x = x + other.x;
-        y = y + other.y;
-    }
+	void operator+=(Vector& other) {
+		x = x + other.x;
+		y = y + other.y;
+	}
 
-    void operator -=(Vector& other){
-        x = x - other.x;
-        y = y - other.y;
-    }
+	void operator-=(Vector& other) {
+		x = x - other.x;
+		y = y - other.y;
+	}
 
-    void div(float m){
-        x /= m;
-        y /= m;
-    }
+	void div(float m) {
+		x /= m;
+		y /= m;
+	}
 
-    float mag(){
-        return std::sqrt(x*x + y*y);
-    }
+	void add(Vector v) {
+		x = x + v.x;
+		y = y + v.y;
+	}
 
-    void normalize(){
-        float m = mag();
-        if (m != 0){
-            div(m);
-        }
-    }
+	float mag() {
+		return std::sqrt(x * x + y * y);
+	}
 
-    void limit(float max){
-        if (x >= max){
-            x = max;
-        }
+	void normalize() {
+		float m = mag();
+		if (m != 0) {
+			div(m);
+		}
+	}
 
-        if (y >= max){
-            y = max;
-        }
-    }
+	void limit(float max) {
+		if (x >= max) {
+			x = max;
+		}
 
-    static Vector sub(Vector v1,Vector v2){
-        return {v1.x - v2.x,v1.y - v2.y};
-    }
+		if (y >= max) {
+			y = max;
+		}
+	}
 
-    void mult(float m){
-        x *= m;
-        y *= m;
-    }
+	static Vector sub(Vector v1, Vector v2) {
+		return { v1.x - v2.x, v1.y - v2.y };
+	}
 
+	void mult(float m) {
+		x *= m;
+		y *= m;
+	}
 };

@@ -14,12 +14,15 @@ struct Draw{
     void present();
     void pollevent(SDL_Event& event);
 public:
-    static std::vector<std::string_view> nodes;
     static uint32_t index_;
+    const static std::vector<std::string_view> nodes_vector;
+    const static std::vector<std::string_view> nodes_force;
 
+public:
     Walker walker_{};
     Mover mover_{};
-
     void selectNode();
+public:
     Vector mouse_{};
+    bool mousePressed_{false};
 };
