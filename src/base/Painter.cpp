@@ -30,7 +30,6 @@ void Painter::DrawRect(float x, float y, float width, float height, Color color)
 		width, // 宽度
 		height // 高度
 	};
-
 	SDL_RenderFillRect(GetRenderer(), &rect);
 }
 

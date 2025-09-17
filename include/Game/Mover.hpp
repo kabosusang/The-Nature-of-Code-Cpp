@@ -4,6 +4,9 @@
 #include "Tools/Random.hpp"
 #include "base/Painter.hpp"
 #include <iostream>
+#include "Game/Nature/Liquid.hpp"
+
+
 
 class Mover {
 public:
@@ -25,7 +28,7 @@ public:
 		auto& canvas = Canvas::getInstance();
 		location = { x, y };
 		velocity = { 0, 0 };
-		acceleration = { -0.001, 0.01 };
+		acceleration = { 0, 0};
 		mass = m;
 	}
 
@@ -59,4 +62,25 @@ public:
 		force.div(mass);
 		acceleration.add(force);
 	}
+
+	//Liquid
+	bool IsInside(Liquid& l){
+		return (location.x > l.x && location.x < (l.x + l.w) &&
+            location.y > l.y && location.y < (l.y + l.h));
+	}
+
+	void drag(Liquid& l){
+		float speed = velocity.mag();
+		float dragMagnitude = l.c * speed * speed;
+		Vector drag = velocity;
+		drag.mult(-1);
+   	 	drag.normalize();
+    	drag.mult(dragMagnitude);
+
+		applyForce(drag);
+	}
+
+
+
+
 };
