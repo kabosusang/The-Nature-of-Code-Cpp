@@ -22,9 +22,8 @@ const std::vector<std::string_view> Draw::nodes_force{
 	"MouseDownWind",
 	"ExternalForce",
 	"FirctionForce",
-	"DragMagnitude"
-
-
+	"DragMagnitude",
+	"Attractor"
 };
 
 
@@ -74,6 +73,9 @@ void Draw::selectNode() {
 			case 7:{
 				DragMagnitude_Init(this);
 			}break;
+			case 8:{
+				Attractor_Init();
+			}break;
 
 			default:{
 				ClearMovers();
@@ -108,6 +110,9 @@ void Draw::selectNode() {
 		}break;
 		case 7:{
 			DragMagnitude(this);
+		}break;
+		case 8:{
+			Attractor_Draw(this);
 		}break;
 		
 

@@ -10,6 +10,8 @@ void MutiBallForce_Init(Draw* draw);
 void MutiBallForce(Draw* draw);
 void FirctionForce(Draw* draw);
 
-
 void DragMagnitude_Init(Draw* draw);
 void DragMagnitude(Draw* draw);
+
+void Attractor_Init();
+void Attractor_Draw(Draw* draw);

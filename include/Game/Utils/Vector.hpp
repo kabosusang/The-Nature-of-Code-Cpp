@@ -54,4 +54,5 @@ struct Vector {
 		x *= m;
 		y *= m;
 	}
+
 };
