@@ -5,19 +5,20 @@
 #include "base/Painter.hpp"
 
 
-//Vector
+
 #include "Game/Func/Vector.hpp"
 #include "Game/Func/Force.hpp"
+#include "Game/Func/Angle.hpp"
 
 
-
+//Vector
 const std::vector<std::string_view> Draw::nodes_vector{
 	"WalkerStep",
 	"RandomCircle",
 	"PingPongBall",
 	"MouseBall"
 };
-
+//Force
 const std::vector<std::string_view> Draw::nodes_force{
 	"MouseDownWind",
 	"ExternalForce",
@@ -25,6 +26,23 @@ const std::vector<std::string_view> Draw::nodes_force{
 	"DragMagnitude",
 	"Attractor"
 };
+
+//Angle
+const std::vector<std::string_view> Draw::angles_force{
+	"AngleMotion",
+
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 uint32_t Draw::index_ = 0;
@@ -113,6 +131,10 @@ void Draw::selectNode() {
 		}break;
 		case 8:{
 			Attractor_Draw(this);
+		}break;
+		//Angle
+		case 9:{
+			AngleMotion(this);
 		}break;
 		
 

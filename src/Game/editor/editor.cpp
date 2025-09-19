@@ -78,6 +78,8 @@ void Editor::draw() {
 const static short vectorNum = Draw::nodes_vector.size();
 const static short forceNum = Draw::nodes_force.size();
 
+
+
 void Editor::DemoWindowWidgetsListBoxes() {
 	static bool showWindow = true; // 控制窗口显示
 	if (showWindow) {
@@ -129,6 +131,34 @@ void Editor::DemoWindowWidgetsListBoxes() {
 
 				ImGui::TreePop();
 			}
+
+			if (ImGui::TreeNode("Angle")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				auto item_selected_idx = Draw::index_;
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Angle", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::angles_force.size(); n++) {
+						bool is_selected = (item_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::angles_force[n].data(), is_selected, flags)) {
+							Draw::index_ = n + vectorNum + forceNum;
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::TreePop();
+			}
+
+
+
+
 		}
 		ImGui::End();
 	}
