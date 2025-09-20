@@ -13,10 +13,19 @@
 constexpr float radians(float f) {
 	return TWO_PI * (f / 360);
 }
-
+ 
 constexpr float degrees(float radians) {
 	return radians * (180.0f / PI);
 }
+
+inline float atan(float x,float y){
+    return std::atan2(x,y);
+}
+
+inline Vector PolatoCorrd(float r,float theta){
+    return {r * std::cos(theta),r * std::sin(theta)};
+}
+
 
 class ProcessingStyleTransform {
 private:

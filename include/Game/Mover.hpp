@@ -15,6 +15,10 @@ public:
 	Vector acceleration{};
 	float mass{};
 
+	float angle = 0;
+	float aVelocity = 0;
+	float aAcceleration = 0;
+
 public:
 	Mover() {
 		auto& canvas = Canvas::getInstance();

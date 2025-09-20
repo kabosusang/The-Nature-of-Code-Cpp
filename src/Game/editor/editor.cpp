@@ -23,6 +23,58 @@ Editor::Editor() {
 	init();
 }
 
+
+
+void SetupDarkTheme() {
+	auto& style = ImGui::GetStyle();
+	ImVec4* colors = ImGui::GetStyle().Colors;
+	style.Alpha = 1.0f;
+	style.FrameRounding = 3.0f;
+	style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.94f);
+	//style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+	style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.39f);
+	style.Colors[ImGuiCol_BorderShadow] = ImVec4(1.00f, 1.00f, 1.00f, 0.10f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.96f, 0.96f, 0.96f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 1.00f, 1.00f, 0.51f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.82f, 0.82f, 0.82f, 1.00f);
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.98f, 0.98f, 0.98f, 0.53f);
+	style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.69f, 0.69f, 0.69f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.59f, 0.59f, 0.59f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
+	//style.Colors[ImGuiCol_ComboBg] = ImVec4(0.86f, 0.86f, 0.86f, 0.99f);
+	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.24f, 0.52f, 0.88f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_Header] = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
+	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
+	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	//style.Colors[ImGuiCol_Column] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+	//style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+	//style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.50f);
+	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+	//style.Colors[ImGuiCol_CloseButton] = ImVec4(0.59f, 0.59f, 0.59f, 0.50f);
+	//style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.98f, 0.39f, 0.36f, 1.00f);
+	//style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.98f, 0.39f, 0.36f, 1.00f);
+	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+	//style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+}
+
 void Editor::init() {
 	float main_scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
@@ -37,6 +89,7 @@ void Editor::init() {
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+	io.Fonts->AddFontDefault();
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -45,8 +98,7 @@ void Editor::init() {
 	// Setup scaling
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.ScaleAllSizes(main_scale); // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
-	style.FontScaleDpi = main_scale; // Set initial font scale. (using io.ConfigDpiScaleFonts=true makes this unnecessary. We leave both here for documentation purpose)
-
+	SetupDarkTheme();
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL3_InitForSDLRenderer(canvas.GetWindow(), painter.GetRenderer());
 	ImGui_ImplSDLRenderer3_Init(painter.GetRenderer());
@@ -78,22 +130,24 @@ void Editor::draw() {
 const static short vectorNum = Draw::nodes_vector.size();
 const static short forceNum = Draw::nodes_force.size();
 
-
-
 void Editor::DemoWindowWidgetsListBoxes() {
-	static bool showWindow = true; // 控制窗口显示
+	static bool showWindow = true;
+	static int vector_selected_idx = 0;
+	static int force_selected_idx = 0;
+	static int angle_selected_idx = 0;
+
 	if (showWindow) {
 		if (ImGui::Begin("Select Demo", &showWindow)) {
 			if (ImGui::TreeNode("Vector")) {
 				//static int item_selected_idx = 0; // Here we store our selected data as an index.
 				// Custom size: use all width, 5 items tall
-				auto item_selected_idx = Draw::index_;
 				ImGui::Text("Select:");
 				if (ImGui::BeginListBox("Vector", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
 					for (int n = 0; n < Draw::nodes_vector.size(); n++) {
-						bool is_selected = (item_selected_idx == n);
+						bool is_selected = (vector_selected_idx == n);
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::nodes_vector[n].data(), is_selected, flags)) {
+							vector_selected_idx = n;
 							Draw::index_ = n;
 						}
 
@@ -111,13 +165,13 @@ void Editor::DemoWindowWidgetsListBoxes() {
 			if (ImGui::TreeNode("Force")) {
 				//static int item_selected_idx = 0; // Here we store our selected data as an index.
 				// Custom size: use all width, 5 items tall
-				auto item_selected_idx = Draw::index_;
 				ImGui::Text("Select:");
 				if (ImGui::BeginListBox("Force", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
 					for (int n = 0; n < Draw::nodes_force.size(); n++) {
-						bool is_selected = (item_selected_idx == n);
+						bool is_selected = (force_selected_idx == n);
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::nodes_force[n].data(), is_selected, flags)) {
+							force_selected_idx = n;
 							Draw::index_ = n + vectorNum;
 						}
 
@@ -135,13 +189,13 @@ void Editor::DemoWindowWidgetsListBoxes() {
 			if (ImGui::TreeNode("Angle")) {
 				//static int item_selected_idx = 0; // Here we store our selected data as an index.
 				// Custom size: use all width, 5 items tall
-				auto item_selected_idx = Draw::index_;
 				ImGui::Text("Select:");
 				if (ImGui::BeginListBox("Angle", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
 					for (int n = 0; n < Draw::angles_force.size(); n++) {
-						bool is_selected = (item_selected_idx == n);
+						bool is_selected = (angle_selected_idx == n);
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::angles_force[n].data(), is_selected, flags)) {
+							angle_selected_idx = n;
 							Draw::index_ = n + vectorNum + forceNum;
 						}
 
@@ -155,10 +209,6 @@ void Editor::DemoWindowWidgetsListBoxes() {
 
 				ImGui::TreePop();
 			}
-
-
-
-
 		}
 		ImGui::End();
 	}

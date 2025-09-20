@@ -2,6 +2,7 @@
 #include "core/Game.hpp"
 #include <base/Canvas.hpp>
 #include <base/Painter.hpp>
+#include <cmath>
 
 #include "Game/Draw.hpp"
 #include "Game/editor/editor.hpp"
@@ -28,7 +29,6 @@ int main(int argc, char* argv[]) {
 		painter.Clear(Black);
 		draw.draw();
 		editor.draw();
-
 		draw.present();
 	});
 

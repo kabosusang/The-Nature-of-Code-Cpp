@@ -30,18 +30,12 @@ const std::vector<std::string_view> Draw::nodes_force{
 //Angle
 const std::vector<std::string_view> Draw::angles_force{
 	"AngleMotion",
+	"PolaAngle",
+	"SpiralAngle",
+	"SimpleHarmonicMotion",
+
 
 };
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -75,10 +69,13 @@ extern void ClearMovers();
 
 
 void Draw::selectNode() {
+	frameCount_++;
+
 	static auto first = index_;
 	if (first != index_){
 		mover_ = {};
 		walker_ = {};
+		frameCount_ = {};
 		first = index_;
 		//Init
 		switch (first) {
@@ -93,6 +90,10 @@ void Draw::selectNode() {
 			}break;
 			case 8:{
 				Attractor_Init();
+			}break;
+			//Angle
+			case 9:{
+				AngleMotion_Init();
 			}break;
 
 			default:{
@@ -136,7 +137,16 @@ void Draw::selectNode() {
 		case 9:{
 			AngleMotion(this);
 		}break;
-		
+		case 10:{
+			PolaAngle(this);
+		}break;
+		case 11:{
+			SpiralAngle(this);
+		}break;
+		case 12:{
+			SimpleHarmonicMotion(this);
+		}break;
+
 
 
 

@@ -18,8 +18,6 @@ public:
     const static std::vector<std::string_view> nodes_vector;
     const static std::vector<std::string_view> nodes_force;
     const static std::vector<std::string_view> angles_force;
-
-
 public:
     Walker walker_{};
     Mover mover_{};
@@ -27,4 +25,5 @@ public:
 public:
     Vector mouse_{};
     bool mousePressed_{false};
+    uint32_t frameCount_{};
 };
