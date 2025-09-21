@@ -12,6 +12,7 @@ public:
         return dis(gen);
     }
 
+	operator float(){return (float)get();}
 
 private:
 	std::random_device rd;

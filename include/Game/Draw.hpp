@@ -17,13 +17,16 @@ public:
     static uint32_t index_;
     const static std::vector<std::string_view> nodes_vector;
     const static std::vector<std::string_view> nodes_force;
-    const static std::vector<std::string_view> angles_force;
-public:
+    const static std::vector<std::string_view> nodes_angle;
+    const static std::vector<std::string_view> nodes_partivle;
+
+
+    public:
     Walker walker_{};
     Mover mover_{};
     void selectNode();
 public:
     Vector mouse_{};
     bool mousePressed_{false};
-    uint32_t frameCount_{};
+    uint64_t frameCount_{};
 };

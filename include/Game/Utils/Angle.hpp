@@ -26,6 +26,12 @@ inline Vector PolatoCorrd(float r,float theta){
     return {r * std::cos(theta),r * std::sin(theta)};
 }
 
+template<typename T>
+T map(T value, T start1, T stop1, T start2, T stop2) {
+    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+}
+
+
 
 class ProcessingStyleTransform {
 private:
@@ -123,6 +129,13 @@ inline void drawEllipse(float x, float y, float width, float height) {
     auto& painter = Painter::getInstance();
     painter.DrawCircle(centerX, centerY, 16);
 }
+
+inline void drawRect(float x1, float y1,Color color) {
+    g_transform.transformPoint(x1, y1);
+    auto& painter = Painter::getInstance();
+    painter.DrawRect(x1, y1 , 8, 8,color);
+}
+
 
 
 

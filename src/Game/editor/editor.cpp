@@ -129,12 +129,18 @@ void Editor::draw() {
 }
 const static short vectorNum = Draw::nodes_vector.size();
 const static short forceNum = Draw::nodes_force.size();
+const static short angleNum = Draw::nodes_angle.size();
+
+
+
 
 void Editor::DemoWindowWidgetsListBoxes() {
 	static bool showWindow = true;
 	static int vector_selected_idx = 0;
 	static int force_selected_idx = 0;
 	static int angle_selected_idx = 0;
+	static int particle_selected_idx = 0;
+
 
 	if (showWindow) {
 		if (ImGui::Begin("Select Demo", &showWindow)) {
@@ -191,12 +197,36 @@ void Editor::DemoWindowWidgetsListBoxes() {
 				// Custom size: use all width, 5 items tall
 				ImGui::Text("Select:");
 				if (ImGui::BeginListBox("Angle", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
-					for (int n = 0; n < Draw::angles_force.size(); n++) {
+					for (int n = 0; n < Draw::nodes_angle.size(); n++) {
 						bool is_selected = (angle_selected_idx == n);
 						ImGuiSelectableFlags flags = 0;
-						if (ImGui::Selectable(Draw::angles_force[n].data(), is_selected, flags)) {
+						if (ImGui::Selectable(Draw::nodes_angle[n].data(), is_selected, flags)) {
 							angle_selected_idx = n;
 							Draw::index_ = n + vectorNum + forceNum;
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Particle")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Particle", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_partivle.size(); n++) {
+						bool is_selected = (particle_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_partivle[n].data(), is_selected, flags)) {
+							particle_selected_idx = n;
+							Draw::index_ = n + vectorNum + forceNum + angleNum;
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
