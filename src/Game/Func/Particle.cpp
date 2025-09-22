@@ -9,11 +9,11 @@
 #include <iostream>
 #include <vector>
 
-Particle p{ { 100.0f, 100.0f } };
+Particle pt{ { 100.0f, 100.0f } };
 
 void SingleParticle(Draw* draw) {
-	p.run();
-	if (p.isDead()) {
+	pt.run();
+	if (pt.isDead()) {
 		//std::cout << "SingleParticle Dead!\n";
 	}
 }
@@ -22,7 +22,7 @@ std::vector<Particle> particles;
 ParticleSystem ps{ { 100, 200 } };
 
 void ClearParticles() {
-	p = {};
+	pt = {};
 	ps.clear();
 	particles.clear();
 }
