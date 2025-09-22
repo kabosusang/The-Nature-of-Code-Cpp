@@ -127,11 +127,17 @@ void Editor::draw() {
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer_);
 	//SDL_RenderPresent(renderer_);
 }
-const static short vectorNum = Draw::nodes_vector.size();
-const static short forceNum = Draw::nodes_force.size();
-const static short angleNum = Draw::nodes_angle.size();
+static short vectorNum() {
+    return Draw::nodes_vector.size();
+}
 
+static short forceNum() {
+    return Draw::nodes_force.size();
+}
 
+static short angleNum() {
+    return Draw::nodes_angle.size();
+}
 
 
 void Editor::DemoWindowWidgetsListBoxes() {
@@ -178,7 +184,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::nodes_force[n].data(), is_selected, flags)) {
 							force_selected_idx = n;
-							Draw::index_ = n + vectorNum;
+							Draw::index_ = n + vectorNum();
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -202,7 +208,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::nodes_angle[n].data(), is_selected, flags)) {
 							angle_selected_idx = n;
-							Draw::index_ = n + vectorNum + forceNum;
+							Draw::index_ = n + vectorNum() + forceNum();
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -226,7 +232,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 						ImGuiSelectableFlags flags = 0;
 						if (ImGui::Selectable(Draw::nodes_partivle[n].data(), is_selected, flags)) {
 							particle_selected_idx = n;
-							Draw::index_ = n + vectorNum + forceNum + angleNum;
+							Draw::index_ = n + vectorNum() + forceNum() + angleNum();
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
