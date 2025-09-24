@@ -19,6 +19,7 @@ public:
     const static std::vector<std::string_view> nodes_force;
     const static std::vector<std::string_view> nodes_angle;
     const static std::vector<std::string_view> nodes_partivle;
+    const static std::vector<std::string_view> nodes_box2d;
 
 
     public:

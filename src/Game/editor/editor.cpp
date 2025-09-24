@@ -139,6 +139,14 @@ static short angleNum() {
     return Draw::nodes_angle.size();
 }
 
+static short particleNum() {
+    return Draw::nodes_partivle.size();
+}
+
+static short box2dNum() {
+    return Draw::nodes_box2d.size();
+}
+
 
 void Editor::DemoWindowWidgetsListBoxes() {
 	static bool showWindow = true;
@@ -146,6 +154,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 	static int force_selected_idx = 0;
 	static int angle_selected_idx = 0;
 	static int particle_selected_idx = 0;
+	static int box2d_selected_idx = 0;
 
 
 	if (showWindow) {
@@ -233,6 +242,30 @@ void Editor::DemoWindowWidgetsListBoxes() {
 						if (ImGui::Selectable(Draw::nodes_partivle[n].data(), is_selected, flags)) {
 							particle_selected_idx = n;
 							Draw::index_ = n + vectorNum() + forceNum() + angleNum();
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Box2D")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Box2D", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_box2d.size(); n++) {
+						bool is_selected = (box2d_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_box2d[n].data(), is_selected, flags)) {
+							box2d_selected_idx = n;
+							Draw::index_ = n + vectorNum() + forceNum() + angleNum() + particleNum();
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)

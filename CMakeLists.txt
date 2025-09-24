@@ -53,6 +53,7 @@ set(SDL_TEST_LIBRARY OFF)
 set(SDL_INSTALL OFF)
 add_subdirectory(3rdparty/SDL3)
 add_subdirectory(3rdparty/imgui)
+add_subdirectory(3rdparty/box2d)
 
 
 #----------------------------------------------------------------
@@ -83,7 +84,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # find_package(OpenCV REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE OpenCV::OpenCV)
 target_link_libraries(${PROJECT_NAME}
- PRIVATE SDL3::SDL3 imgui)
+ PRIVATE SDL3::SDL3 imgui box2d)
 
 #----------------------------------------------------------------
 # 多余Cmake文件
