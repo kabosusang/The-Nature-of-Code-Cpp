@@ -1,4 +1,5 @@
 #pragma once
+#include "Tools/Color.hpp"
 #include "Vector.hpp"
 #include "base/Painter.hpp"
 
@@ -110,6 +111,13 @@ public:
         x = newX;
         y = newY;
     }
+
+     void transformPoint(Vector& v) const {
+        float newX = currentMatrix[0][0] * v.x + currentMatrix[0][1] * v.y + currentMatrix[0][2];
+        float newY = currentMatrix[1][0] * v.y + currentMatrix[1][1] * v.y + currentMatrix[1][2];
+        v = {newX,newY};
+    }
+
 };
 
 
@@ -134,6 +142,14 @@ inline void drawRect(float x1, float y1,Color color) {
     g_transform.transformPoint(x1, y1);
     auto& painter = Painter::getInstance();
     painter.DrawRect(x1, y1 , 8, 8,color);
+}
+
+inline void drawTriangle(Vector v1,Vector v2,Vector v3,Color color){
+    g_transform.transformPoint(v1);
+    g_transform.transformPoint(v2);
+    g_transform.transformPoint(v3);
+    auto& painter = Painter::getInstance();
+    painter.DrawTriangle(v1.x,v1.y,v2.x,v2.y,v3.x,v3.y,{(float)color.r,(float)color.g,(float)color.b,(float)color.a});
 }
 
 

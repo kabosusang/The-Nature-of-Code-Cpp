@@ -55,4 +55,8 @@ struct Vector {
 		y *= m;
 	}
 
+	float heading2D() const {
+        return std::atan2(y, x);
+    }
+
 };

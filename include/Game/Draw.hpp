@@ -10,7 +10,7 @@
 #include <vector>
 
 struct Draw{
-    void draw();
+    void draw(float deltaTime);
     void present();
     void pollevent(SDL_Event& event);
 public:
@@ -20,14 +20,19 @@ public:
     const static std::vector<std::string_view> nodes_angle;
     const static std::vector<std::string_view> nodes_partivle;
     const static std::vector<std::string_view> nodes_box2d;
+    const static std::vector<std::string_view> nodes_vehicle;
+
+
+
 
 
     public:
     Walker walker_{};
     Mover mover_{};
-    void selectNode();
+    void selectNode(float deltaTime);
 public:
     Vector mouse_{};
     bool mousePressed_{false};
+    bool mouseClick_{false};
     uint64_t frameCount_{};
 };

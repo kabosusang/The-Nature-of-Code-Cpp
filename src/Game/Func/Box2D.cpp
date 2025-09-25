@@ -1,85 +1,168 @@
 #include "Game/Func/Box2D.hpp"
+#include "Game/Draw.hpp"
 #include "base/Painter.hpp"
 #include "box2d/box2d.h"
 #include "box2d/collision.h"
 #include "box2d/types.h"
+#include <iostream>
+#include <vector>
 
-// 只声明变量，不初始化
-b2WorldDef worldDef;
-b2WorldId worldId;
+#include "Game/Physical/body.hpp"
+#include "Game/Physical/boxdraw.hpp"
+#include "Game/Physical/world.hpp"
 
-b2BodyDef groundBodyDef;
-b2BodyId groundId;
+//World
+World world;
 
-b2Polygon groundBox;
-b2ShapeDef groundShapeDef;
+//Ground
+Body<BodyType::kStatic, BodyShape::kRect> ground;
+//box
+Body<BodyType::kDynamic, BodyShape::kRect> box;
 
-// 动态物体定义
-b2BodyDef dynamicBodyDef;
-b2BodyId dynamicBodyId;
-b2Polygon dynamicBox;
-b2ShapeDef dynamicShapeDef;
+void ClearLiveWorld() {
+	//Clear
+	if (ground.isValid() && world.isValid()) {
+		ground.destory();
+	}
+
+	if (box.isValid() && world.isValid()) {
+		box.destory();
+	}
+}
 
 void LiveWorld_Init() {
 	auto& canvas = Canvas::getInstance();
+	//Clear
+	ClearLiveWorld();
 
-	// 1. 先初始化世界定义
-	worldDef = b2DefaultWorldDef();
-	worldDef.gravity = { 0.0f, -10.0f };
-
-	// 2. 创建世界
-	worldId = b2CreateWorld(&worldDef);
-
-	// 3. 初始化地面物体定义
-	groundBodyDef = b2DefaultBodyDef();
-	groundBox = b2MakeBox(50.0f, 10.0f);
-	groundShapeDef = b2DefaultShapeDef();
-
-	// 4. 创建地面（在屏幕底部）
-	b2Vec2 groundWorldPos = coordPixelsToWorld({
+	world.Init({ 0.0f, -10.0f });
+	//Ground
+	b2Vec2 groundWorldPos = coordPixelsToWorld(
 			canvas.GetWindowW() / 2.0f,
-			canvas.GetWindowH() - 50.0f // 距离底部50像素
+			canvas.GetWindowH() - (scalarWorldToPixels(0.5f) / 2.0f));
+	ground.Init({ 2.0f, 0.25f });
+	ground.SetPosition(groundWorldPos);
+	ground.CreateBody(world);
+
+	//Dynamic
+
+	b2Vec2 centerWorldPos = coordPixelsToWorld({
+			canvas.GetWindowW() / 2.0f,
+			canvas.GetWindowH() / 2.0f //
 	});
-	groundBodyDef.position = groundWorldPos;
-
-	// 5. 先创建地面物体
-	groundId = b2CreateBody(worldId, &groundBodyDef);
-
-	// 6. 然后添加形状
-	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
-
-	// 7. 初始化动态物体定义
-	dynamicBodyDef = b2DefaultBodyDef();
-	dynamicBox = b2MakeBox(5.0f, 5.0f);
-	dynamicShapeDef = b2DefaultShapeDef();
-
-	// 8. 创建动态物体（在屏幕中心）
-	b2Vec2 centerWorldPos = coordPixelsToWorld({ canvas.GetWindowW() / 2.0f,
-			canvas.GetWindowH() / 2.0f });
-
-	dynamicBodyDef.position = centerWorldPos;
-	dynamicBodyDef.type = b2_dynamicBody; // 设置为动态物体
-
-	// 9. 先创建动态物体
-	dynamicBodyId = b2CreateBody(worldId, &dynamicBodyDef);
-
-	// 10. 设置物理属性（重要！动态物体必须有密度）
-	dynamicShapeDef.density = 1.0f; // 设置密度
-	//dynamicShapeDef.friction = 0.3f; // 设置摩擦系数
-
-	// 11. 然后添加形状
-	b2CreatePolygonShape(dynamicBodyId, &dynamicShapeDef, &dynamicBox);
+	box.Init({ 0.25f, 0.25f });
+	box.SetPosition(centerWorldPos);
+	box.getShap().density = 1.0f;
+	box.getShap().material.friction = 1.0f;
+	box.CreateBody(world);
 }
-void LiveWorld() {
+
+void LiveWorld(float deltaTime) {
 	auto& painter = Painter::getInstance();
-	// 物理世界步进（每秒60帧）
-	float timeStep = 1.0f / 60.0f;
-	b2World_Step(worldId, timeStep, 8);
+	b2World_Step(world.getId(), deltaTime, 8);
 
-	// 获取动态物体的位置并转换为屏幕坐标
-	b2Transform dynamicTransform = b2Body_GetTransform(dynamicBodyId);
+	//box
+	b2Transform dynamicTransform = b2Body_GetTransform(box.getId());
 	b2Vec2 screenPos = coordWorldToPixels(dynamicTransform.p);
-
-	// 这里可以添加渲染代码
-	painter.DrawRect(screenPos.x, screenPos.y, 5, 5, White);
+	float dynamicSize = scalarWorldToPixels(0.5f); // 0.5米 = 50像素
+	painter.DrawRect(
+			screenPos.x - dynamicSize / 2,
+			screenPos.y - dynamicSize / 2,
+			dynamicSize,
+			dynamicSize,
+			White);
+	//ground
+	b2Transform groundTransform = b2Body_GetTransform(ground.getId());
+	b2Vec2 groundScreenPos = coordWorldToPixels(groundTransform.p);
+	float groundWidth = scalarWorldToPixels(4.0f); // 4米宽
+	float groundHeight = scalarWorldToPixels(0.5f); // 0.5米高
+	painter.DrawRect(
+			groundScreenPos.x - groundWidth / 2,
+			groundScreenPos.y - groundHeight / 2,
+			groundWidth,
+			groundHeight,
+			Red);
 }
+
+std::vector<Box> boxes;
+void ClearBox() {
+	boxes.clear();
+	boxes.shrink_to_fit();
+}
+
+void MouseClickMutliBox_Init() {
+    auto& canvas = Canvas::getInstance();
+	ClearBox();
+	ClearLiveWorld();
+    boxes.reserve(1000);
+	world.Init({ 0.0f, -10.0f });
+    //Ground
+	b2Vec2 groundWorldPos = coordPixelsToWorld(
+			canvas.GetWindowW() / 2.0f,
+			canvas.GetWindowH() - (scalarWorldToPixels(0.5f) / 2.0f));
+	ground.Init({ 8.0f, 0.25f });
+	ground.SetPosition(groundWorldPos);
+	ground.CreateBody(world);
+}
+
+void MouseClickMutliBox(Draw* draw, float deltaTime) {
+	b2World_Step(world.getId(), deltaTime, 8);
+	if (draw->mousePressed_) {
+		b2Vec2 groundWorldPos = coordPixelsToWorld(
+				draw->mouse_.x,
+				draw->mouse_.y);
+		boxes.emplace_back(world, groundWorldPos);
+	}
+
+
+	auto it = boxes.begin();
+	while (it != boxes.end()) {
+        if ((*it).isValid()){
+            (*it).run();
+        }
+		++it;
+	}
+    auto& painter = Painter::getInstance();
+    b2Transform groundTransform = b2Body_GetTransform(ground.getId());
+	b2Vec2 groundScreenPos = coordWorldToPixels(groundTransform.p);
+	float groundWidth = scalarWorldToPixels(16.0f);
+	float groundHeight = scalarWorldToPixels(0.5f); // 0.5米高
+	painter.DrawRect(
+			groundScreenPos.x - groundWidth / 2,
+			groundScreenPos.y - groundHeight / 2,
+			groundWidth,
+			groundHeight,
+			Red);
+
+}
+
+void StaticBoundary_Init(){
+
+}
+void StaticBoundary(Draw* draw,float deltaTime){
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

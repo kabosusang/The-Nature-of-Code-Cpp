@@ -3,6 +3,7 @@
 #include <base/Canvas.hpp>
 #include <base/Painter.hpp>
 
+
 Painter::Painter() :
 		renderer(SDL_CreateRenderer(Canvas::getInstance().GetWindow(), NULL), SDL_DestroyRenderer) {
 	if (!renderer) {
@@ -77,7 +78,14 @@ void Painter::DrawCircle(int centerX, int centerY, int radius) {
 	}
 }
 
-
+void Painter::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, SDL_FColor color) {
+    SDL_Vertex vertices[3] = {
+        { SDL_FPoint{ (float)x1, (float)y1 }, color, SDL_FPoint{ 0 } },
+        { SDL_FPoint{ (float)x2, (float)y2 }, color, SDL_FPoint{ 0 } },
+        { SDL_FPoint{ (float)x3, (float)y3 }, color, SDL_FPoint{ 0 } }
+    };
+    SDL_RenderGeometry(GetRenderer(), nullptr, vertices, 3, nullptr, 0);
+}
 
 
 void Painter::DrawFilledCircle(int centerX, int centerY, int radius, Color color) {

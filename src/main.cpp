@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	//Logic
 	train.subscribeFrame([&draw,&editor,&painter](float deltaTime) {
 		painter.Clear(Black);
-		draw.draw();
+		draw.draw(deltaTime);
 		editor.draw();
 		draw.present();
 	});
@@ -38,8 +38,6 @@ int main(int argc, char* argv[]) {
 		draw.pollevent(e);
 		editor.pollevent(e);
 	});
-
-
 
 	// train.publishEvent(SDL_Event &event){
 

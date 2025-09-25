@@ -9,6 +9,10 @@
 #include "Game/Func/Vector.hpp"
 #include "Game/Func/Particle.hpp"
 #include "Game/Func/Box2D.hpp"
+#include "Game/Func/Vehicle.hpp"
+
+
+
 #include <iostream>
 
 //Vector
@@ -47,12 +51,18 @@ const std::vector<std::string_view> Draw::nodes_partivle{
 	"ForceParticlesSystem",
 	
 };
-
+//Box2D
 const std::vector<std::string_view> Draw::nodes_box2d{
 	"LiveWorld",
-
-	
+	"MouseClickMutliBox",
+	// "StaticBoundary",
 };
+
+const std::vector<std::string_view> Draw::nodes_vehicle{
+	"SimpleVehicleMouseClick",
+	"SimpleVehicleArriveMouseClick"
+};
+
 
 uint32_t Draw::index_ = 0;
 
@@ -69,8 +79,8 @@ void Draw::pollevent(SDL_Event& event) {
 	}
 }
 
-void Draw::draw() {
-	selectNode();
+void Draw::draw(float deltaTime) {
+	selectNode(deltaTime);
 }
 
 void Draw::present() {
@@ -81,15 +91,16 @@ void Draw::present() {
 //Remove Resource
 extern void ClearMovers();
 extern void ClearParticles();
-
+extern void ClearBox();
 
 void ClearResource(){
 	ClearMovers();
 	ClearParticles();
+	ClearBox();
 }
 
 
-void Draw::selectNode() {
+void Draw::selectNode(float deltaTime) {
 	frameCount_++;
 
 	static auto first = index_;
@@ -98,7 +109,6 @@ void Draw::selectNode() {
 		walker_ = {};
 		frameCount_ = {};
 		first = index_;
-		std::cout << "Index " << first;
 		//Init
 		switch (first) {
 			case 5: {
@@ -142,6 +152,12 @@ void Draw::selectNode() {
 			case 22:{
 				LiveWorld_Init();
 			}break;
+
+			case 23:{
+				MouseClickMutliBox_Init();
+			}break;
+
+
 
 
 
@@ -229,10 +245,25 @@ void Draw::selectNode() {
 			ForceParticlesSystem(this);
 		}break;
 
-		case 22:{
-			
-			LiveWorld();
+		//Box 2D
+		case 22:{			
+			LiveWorld(deltaTime);
 		}break;
+
+		case 23:{
+			MouseClickMutliBox(this,deltaTime);
+		}break;
+
+		//Vehicle
+		case 24:{
+			SimpleVehicle(this);
+		}break;
+		case 25:{
+			SimpleVehicleArrive(this);
+		}break;
+		
+
+
 
 
 

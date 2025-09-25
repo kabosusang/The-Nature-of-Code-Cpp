@@ -11,8 +11,6 @@ inline static constexpr Color Green = {0,255,0,255};
 inline static constexpr Color Blue = {0,0,255,255};
 
 
-
-
 class Painter {
 public:
 	static Painter& getInstance() {
@@ -39,6 +37,8 @@ public:
 	void DrawRectOutline(float x, float y, float width, float height, Color color);
 	void DrawCircle(int centerX, int centerY, int radius);
 	void DrawFilledCircle(int centerX, int centerY, int radius, Color color);
+	void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, SDL_FColor color);
+
 
 private:
 	Painter();

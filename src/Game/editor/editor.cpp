@@ -147,6 +147,11 @@ static short box2dNum() {
     return Draw::nodes_box2d.size();
 }
 
+static short VehicleNum() {
+    return Draw::nodes_vehicle.size();
+}
+
+
 
 void Editor::DemoWindowWidgetsListBoxes() {
 	static bool showWindow = true;
@@ -155,6 +160,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 	static int angle_selected_idx = 0;
 	static int particle_selected_idx = 0;
 	static int box2d_selected_idx = 0;
+	static int vehicle_selected_idx = 0;
 
 
 	if (showWindow) {
@@ -278,6 +284,31 @@ void Editor::DemoWindowWidgetsListBoxes() {
 
 				ImGui::TreePop();
 			}
+
+			if (ImGui::TreeNode("Vehicle")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Vehicle", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_vehicle.size(); n++) {
+						bool is_selected = (vehicle_selected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_vehicle[n].data(), is_selected, flags)) {
+							vehicle_selected_idx = n;
+							Draw::index_ = n + vectorNum() + forceNum() + angleNum() + particleNum() + box2dNum();
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::TreePop();
+			}
+
 		}
 		ImGui::End();
 	}
