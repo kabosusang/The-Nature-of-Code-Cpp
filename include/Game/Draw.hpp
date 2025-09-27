@@ -21,8 +21,7 @@ public:
     const static std::vector<std::string_view> nodes_partivle;
     const static std::vector<std::string_view> nodes_box2d;
     const static std::vector<std::string_view> nodes_vehicle;
-
-
+    const static std::vector<std::string_view> nodes_automata;
 
 
 
@@ -33,6 +32,7 @@ public:
 public:
     Vector mouse_{};
     bool mousePressed_{false};
+    bool blankPressed_{false};
     bool mouseClick_{false};
     uint64_t frameCount_{};
 };

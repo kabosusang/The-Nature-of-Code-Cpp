@@ -1,6 +1,8 @@
 #include "Game/editor/editor.hpp"
 
 #include "Game/Draw.hpp"
+#include "Game/Nature/CA.hpp"
+#include "Game/Nature/GameLife.hpp"
 #include "base/Canvas.hpp"
 #include "base/Painter.hpp"
 
@@ -22,8 +24,6 @@ static void HelpMarker(const char* desc) {
 Editor::Editor() {
 	init();
 }
-
-
 
 void SetupDarkTheme() {
 	auto& style = ImGui::GetStyle();
@@ -128,29 +128,35 @@ void Editor::draw() {
 	//SDL_RenderPresent(renderer_);
 }
 static short vectorNum() {
-    return Draw::nodes_vector.size();
+	return Draw::nodes_vector.size();
 }
 
 static short forceNum() {
-    return Draw::nodes_force.size();
+	return Draw::nodes_force.size();
 }
 
 static short angleNum() {
-    return Draw::nodes_angle.size();
+	return Draw::nodes_angle.size();
 }
 
 static short particleNum() {
-    return Draw::nodes_partivle.size();
+	return Draw::nodes_partivle.size();
 }
 
 static short box2dNum() {
-    return Draw::nodes_box2d.size();
+	return Draw::nodes_box2d.size();
 }
 
 static short VehicleNum() {
-    return Draw::nodes_vehicle.size();
+	return Draw::nodes_vehicle.size();
 }
 
+static short AutomataNum() {
+	return Draw::nodes_automata.size();
+}
+
+extern std::string Wolframestatus;
+extern GameOfLife gol;
 
 
 void Editor::DemoWindowWidgetsListBoxes() {
@@ -161,7 +167,7 @@ void Editor::DemoWindowWidgetsListBoxes() {
 	static int particle_selected_idx = 0;
 	static int box2d_selected_idx = 0;
 	static int vehicle_selected_idx = 0;
-
+	static int automataselected_idx = 0;
 
 	if (showWindow) {
 		if (ImGui::Begin("Select Demo", &showWindow)) {
@@ -309,6 +315,37 @@ void Editor::DemoWindowWidgetsListBoxes() {
 				ImGui::TreePop();
 			}
 
+			if (ImGui::TreeNode("Automata")) {
+				//static int item_selected_idx = 0; // Here we store our selected data as an index.
+				// Custom size: use all width, 5 items tall
+				ImGui::Text("Select:");
+				if (ImGui::BeginListBox("Automata", ImVec2(FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+					for (int n = 0; n < Draw::nodes_automata.size(); n++) {
+						bool is_selected = (automataselected_idx == n);
+						ImGuiSelectableFlags flags = 0;
+						if (ImGui::Selectable(Draw::nodes_automata[n].data(), is_selected, flags)) {
+							automataselected_idx = n;
+							Draw::index_ = n + vectorNum() + forceNum() + angleNum() + particleNum() + box2dNum() + VehicleNum();
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+						}
+						if (n == 0 && automataselected_idx == 0) {
+							ImGui::Text(Wolframestatus.data());
+							CA::drawRulesetControls();
+						}
+						if (n == 1 && automataselected_idx == 1) {
+							// 显示控制面板
+							GameOfLife::drawControls(gol);
+						}
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::TreePop();
+			}
 		}
 		ImGui::End();
 	}

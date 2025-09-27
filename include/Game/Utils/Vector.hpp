@@ -29,6 +29,18 @@ struct Vector {
 		return std::sqrt(x * x + y * y);
 	}
 
+	void setMag(float magnitude) {
+        float currentMag = mag();
+        if (currentMag > 0) { 
+            float scale = magnitude / currentMag;
+            x *= scale;
+            y *= scale;
+        } else {
+            x = magnitude;
+            y = 0;
+        }
+    }
+
 	void normalize() {
 		float m = mag();
 		if (m != 0) {
@@ -56,7 +68,12 @@ struct Vector {
 	}
 
 	float heading2D() const {
-        return std::atan2(y, x);
-    }
+		return std::atan2(y, x);
+	}
 
+	static float dist(const Vector& v1, const Vector& v2) {
+		float dx = v2.x - v1.x;
+		float dy = v2.y - v1.y;
+		return std::sqrt(dx * dx + dy * dy);
+	}
 };

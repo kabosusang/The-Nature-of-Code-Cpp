@@ -1,18 +1,18 @@
 #include "Game/Draw.hpp"
+#include "Game/Func/CeAutomata.hpp"
 #include "Game/Utils/Vector.hpp"
 #include "Tools/Random.hpp"
 #include "base/Canvas.hpp"
 #include "base/Painter.hpp"
 
 #include "Game/Func/Angle.hpp"
-#include "Game/Func/Force.hpp"
-#include "Game/Func/Vector.hpp"
-#include "Game/Func/Particle.hpp"
 #include "Game/Func/Box2D.hpp"
+#include "Game/Func/Force.hpp"
+#include "Game/Func/Particle.hpp"
+#include "Game/Func/Vector.hpp"
 #include "Game/Func/Vehicle.hpp"
 
-
-
+#include <cmath>
 #include <iostream>
 
 //Vector
@@ -49,7 +49,7 @@ const std::vector<std::string_view> Draw::nodes_partivle{
 	"ParticlesSystemMouseClick",
 	"PolyParticlesSystemMouseClick",
 	"ForceParticlesSystem",
-	
+
 };
 //Box2D
 const std::vector<std::string_view> Draw::nodes_box2d{
@@ -60,7 +60,16 @@ const std::vector<std::string_view> Draw::nodes_box2d{
 
 const std::vector<std::string_view> Draw::nodes_vehicle{
 	"SimpleVehicleMouseClick",
-	"SimpleVehicleArriveMouseClick"
+	"SimpleVehicleArriveMouseClick",
+	"FlowField",
+	"GroupBehavior",
+	"GroupApplyBehavior",
+	"FlockBoidsBehavior",
+};
+
+const std::vector<std::string_view> Draw::nodes_automata{
+	"Wolframe",
+	"GameLife"
 };
 
 
@@ -77,6 +86,11 @@ void Draw::pollevent(SDL_Event& event) {
 	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
 		mousePressed_ = false;
 	}
+
+	if (event.key.key == SDLK_SPACE){
+		blankPressed_ = true;
+	}
+
 }
 
 void Draw::draw(float deltaTime) {
@@ -92,13 +106,16 @@ void Draw::present() {
 extern void ClearMovers();
 extern void ClearParticles();
 extern void ClearBox();
+extern void ClearVehicles();
+extern void ClearCA();
 
-void ClearResource(){
+void ClearResource() {
 	ClearMovers();
 	ClearParticles();
 	ClearBox();
+	ClearVehicles();
+	ClearCA();
 }
-
 
 void Draw::selectNode(float deltaTime) {
 	frameCount_++;
@@ -139,32 +156,49 @@ void Draw::selectNode(float deltaTime) {
 			case 16: {
 				PendulumMotion_Init();
 			} break;
-			//Particle
+				//Particle
 
-			case 18:{
+			case 18: {
 				MutiParticlesMotion_Init();
-			}break;
+			} break;
 
-			case 21:{
+			case 21: {
 				ForceParticlesSystem_Init();
-			}break;
+			} break;
 
-			case 22:{
+			case 22: {
 				LiveWorld_Init();
-			}break;
+			} break;
 
-			case 23:{
+			case 23: {
 				MouseClickMutliBox_Init();
-			}break;
+			} break;
+
+			case 26: {
+				LiveInFlowField_Init();
+			} break;
+
+			case 27: {
+				GroupBehavior_Init();
+			} break;
+
+			case 28: {
+				GroupBehavior_Init();
+			} break;
+			case 29: {
+				FlockBoidsBehavior_Init();
+			} break;
+			case 30: {
+				Wolframe_Init();
+			} break;
+			case 31: {
+				GameOfLife_Init();
+			} break;
 
 
 
 
 
-
-
-
-			
 
 			default: {
 				ClearResource();
@@ -229,41 +263,58 @@ void Draw::selectNode(float deltaTime) {
 			PendulumMotion(this);
 		} break;
 		//Particle
-		case 17:{
+		case 17: {
 			SingleParticle(this);
-		}break;
-		case 18:{
+		} break;
+		case 18: {
 			MutiParticlesMotion();
-		}break;
-		case 19:{
+		} break;
+		case 19: {
 			ParticlesSystemMouseClick(this);
-		}break;
-		case 20:{
+		} break;
+		case 20: {
 			PolyParticlesSystemMouseClick(this);
-		}break;
-		case 21:{
+		} break;
+		case 21: {
 			ForceParticlesSystem(this);
-		}break;
+		} break;
 
 		//Box 2D
-		case 22:{			
+		case 22: {
 			LiveWorld(deltaTime);
-		}break;
+		} break;
 
-		case 23:{
-			MouseClickMutliBox(this,deltaTime);
-		}break;
+		case 23: {
+			MouseClickMutliBox(this, deltaTime);
+		} break;
 
 		//Vehicle
-		case 24:{
+		case 24: {
 			SimpleVehicle(this);
-		}break;
-		case 25:{
+		} break;
+		case 25: {
 			SimpleVehicleArrive(this);
-		}break;
-		
+		} break;
+		case 26: {
+			LiveInFlowField();
+		} break;
+		case 27: {
+			GroupBehavior(this);
+		} break;
+		case 28: {
+			GroupApplyBehavior(this);
+		} break;
+		case 29: {
+			FlockBoidsBehavior(this);
+		} break;
 
-
+		//CA
+		case 30: {
+			Wolframe(this);
+		} break;
+		case 31: {
+			GameOfLifeUpdate(this);
+		} break;
 
 
 

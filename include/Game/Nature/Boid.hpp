@@ -1,12 +1,11 @@
 #pragma once
 
-#include "FlowField.hpp"
 #include "Game/Utils/Angle.hpp"
 #include "Game/Utils/Vector.hpp"
 #include "base/Painter.hpp"
 #include <vector>
 
-class Vehicle {
+class Boid {
 public:
 	Vector location{};
 	Vector velocity{};
@@ -14,8 +13,8 @@ public:
 	float r{};
 	float maxspeed{};
 	float maxforce{};
-	Vehicle() = default;
-	Vehicle(float x, float y) {
+	Boid() = default;
+	Boid(float x, float y) {
 		acceleration = {};
 		velocity = {};
 		location = { x, y };
@@ -39,18 +38,9 @@ public:
 	}
 
 	void applyForce(Vector force) {
+        if (force.x == 0 && force.y == 0)return;
 		force.div(1);
 		acceleration.add(force);
-	}
-
-	void seek(Vector target) {
-		auto desired = Vector::sub(target, location);
-		desired.normalize();
-		desired.mult(maxspeed);
-		auto steer = Vector::sub(desired, velocity);
-		steer.limit(maxforce);
-
-		applyForce(steer);
 	}
 
 	void arrive(Vector target) {
@@ -79,58 +69,23 @@ public:
 		g_transform.popMatrix();
 	}
 
-	void follow(FlowField& flow) {
-		auto desired = flow.lookup(location);
-		desired.mult(maxspeed);
-
-		auto steer = Vector::sub(desired, velocity);
-		steer.limit(maxforce);
-		applyForce(steer);
-	}
-
-	void separate(std::vector<Vehicle>& vechicles){
-		static float desiredseparation = 20;
-		auto sum = Vector{};
-		int count{};
-		for (auto& other : vechicles){
-			auto d = Vector::dist(location,other.location);
-			if ((d > 0) && (d < desiredseparation)){
-				auto diff = Vector::sub(location,other.location);
-				diff.normalize();
-				diff.div(d);
-				sum.add(diff);
-				count ++;
-			}
-		}
-
-		if (count > 0){
-			sum.div(count);
-			sum.normalize();
-			sum.mult(maxspeed);
-			auto steer = Vector::sub(sum, velocity);
-			steer.limit(maxforce);
-			applyForce(steer);
-		}
-	}
-
 	//6.12
-
-	Vector separate_(std::vector<Vehicle>& vechicles){
+	Vector separate_(std::vector<Boid>& vechicles) {
 		static float desiredseparation = 20;
 		auto sum = Vector{};
 		int count{};
-		for (auto& other : vechicles){
-			auto d = Vector::dist(location,other.location);
-			if ((d > 0) && (d < desiredseparation)){
-				auto diff = Vector::sub(location,other.location);
+		for (auto& other : vechicles) {
+			auto d = Vector::dist(location, other.location);
+			if ((d > 0) && (d < desiredseparation)) {
+				auto diff = Vector::sub(location, other.location);
 				diff.normalize();
 				diff.div(d);
 				sum.add(diff);
-				count ++;
+				count++;
 			}
 		}
 
-		if (count > 0){
+		if (count > 0) {
 			sum.div(count);
 			sum.normalize();
 			sum.mult(maxspeed);
@@ -143,7 +98,7 @@ public:
 		return {};
 	}
 
-	Vector seek_(Vector target){
+	Vector seek_(Vector target) {
 		auto desired = Vector::sub(target, location);
 		desired.normalize();
 		desired.mult(maxspeed);
@@ -152,7 +107,7 @@ public:
 		return steer;
 	}
 
-	void applyBehaviors(Vector mouseXY,std::vector<Vehicle>& vechicles){
+	void applyBehaviors(Vector mouseXY, std::vector<Boid>& vechicles) {
 		auto separate = separate_(vechicles);
 		auto seek = seek_(mouseXY);
 		separate.mult(1.5);
@@ -162,18 +117,73 @@ public:
 	}
 
 	void display_() {
-		//float theta = velocity.heading2D() + PI / 2;
-		// g_transform.pushMatrix();
-		// g_transform.translate(location.x, location.y);
-		// g_transform.rotate(theta);
-		// drawEllipse(location.x,location.y, r, r);
-		// g_transform.popMatrix();
 		auto& painter = Painter::getInstance();
 		painter.DrawFilledCircle(location.x, location.y, 10, White);
 	}
 
+	//Boids
+	Vector align(std::vector<Boid>& boids) {
+		static float neighbordist = 50;
+		auto sum = Vector{};
+		int count = 0;
+		for (auto& other : boids) {
+			auto d = Vector::dist(location, other.location);
+			if ((d > 0) && (d < neighbordist)) {
+				sum.add(other.velocity);
+				count++;
+			}
+		}
+
+		if (count > 0) {
+			sum.div(count);
+			sum.normalize();
+			sum.mult(maxspeed);
+			auto steer = Vector::sub(sum, velocity);
+			steer.limit(maxforce);
+			return steer;
+		}
+		return {};
+	}
+
+    Vector cohesion(std::vector<Boid>& boids){
+        float neighbordist = 50;
+        auto sum = Vector{};
+        int count = 0;
+        for (auto& other : boids) {
+			auto d = Vector::dist(location, other.location);
+			if ((d > 0) && (d < neighbordist)) {
+				sum.add(other.location);
+				count++;
+			}
+		}
+
+        if (count > 0){
+            sum.div(count);
+            return seek_(sum);
+        }
+
+        return {};
+    }
+
+    void run(std::vector<Boid>& boids){
+        update();
+        flock(boids); 
+        display();
+    }
 
 
+	void flock(std::vector<Boid>& boids) {
+		auto sep = separate_(boids); //分离
+		auto ali = align(boids); //对齐
+		auto coh = cohesion(boids); //聚集
 
+        sep.mult(1.5);
+        ali.mult(1);
+        coh.mult(1);
 
+        applyForce(sep);
+        applyForce(ali);
+        applyForce(coh);
+    
+    }
 };

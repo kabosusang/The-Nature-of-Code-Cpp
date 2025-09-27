@@ -9,6 +9,9 @@ inline static constexpr Color White = {255,255,255,255};
 inline static constexpr Color Red = {255,0,0,255};
 inline static constexpr Color Green = {0,255,0,255};
 inline static constexpr Color Blue = {0,0,255,255};
+inline static constexpr Color Gray = {220,220,220,255};
+
+
 
 
 class Painter {
